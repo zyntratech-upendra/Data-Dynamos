@@ -599,6 +599,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+    <!-- Configuration -->
+    <script src="./config.js"></script>
+
     <!-- Error Handler -->
     <script>
         window.onerror = function (message, source, lineno, colno, error) {
@@ -619,10 +622,8 @@
         {% raw %}
         const { useState, useEffect, useRef } = React;
         
-        // Configure API URL - change this to your Render backend URL
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-          ? 'http://localhost:5000/api'  // Local development
-          : 'https://your-render-backend.onrender.com/api';  // Replace with your Render URL
+        // Use API URL from config (set via environment variable)
+        const API_BASE_URL = window.__CONFIG__ ? window.__CONFIG__.getApiUrl() : 'https://your-render-service-name.onrender.com/api';
 
         // Fix Leaflet Icons
         delete L.Icon.Default.prototype._getIconUrl;
