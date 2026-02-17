@@ -1,0 +1,13 @@
+@echo off
+echo Starting SpectraMining AI (Python Environment)...
+cd backend
+if not exist "venv" (
+    echo Creating virtual environment...
+    python -m venv venv
+)
+call venv\Scripts\activate.bat
+echo Installing dependencies...
+pip install -r requirements.txt
+echo Starting Application...
+echo Open http://localhost:5000 in your browser after the server starts.
+python app.py
