@@ -618,7 +618,11 @@
     <script type="text/babel">
         {% raw %}
         const { useState, useEffect, useRef } = React;
-        const API_BASE_URL = '/api';
+        
+        // Configure API URL - change this to your Render backend URL
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+          ? 'http://localhost:5000/api'  // Local development
+          : 'https://your-render-backend.onrender.com/api';  // Replace with your Render URL
 
         // Fix Leaflet Icons
         delete L.Icon.Default.prototype._getIconUrl;

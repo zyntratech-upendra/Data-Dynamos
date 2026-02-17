@@ -3,7 +3,7 @@ SpectraMining AI - Backend API Server
 Flask API for satellite-based mineral detection
 """
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import ee
 from geopy.geocoders import Nominatim
@@ -11,6 +11,7 @@ from geopy.distance import geodesic
 import warnings
 import logging
 from datetime import datetime, timedelta
+from ee_auth import initialize_earth_engine
 
 warnings.filterwarnings('ignore')
 logging.basicConfig(level=logging.INFO)
@@ -25,12 +26,8 @@ CORS(app)  # Enable CORS for all routes
 MY_PROJECT_ID = "spectramining"
 geolocator = Nominatim(user_agent="spectramining_ai_pro_v6")
 
-# Initialize Google Earth Engine
-try:
-    ee.Initialize(project=MY_PROJECT_ID)
-    logging.info("✓ Earth Engine initialized successfully")
-except Exception as e:
-    logging.error(f"✗ Earth Engine initialization failed: {e}")
+# Initialize Google Earth Engine with proper authentication
+initialize_earth_engine()
 
 
 def get_nearby_places(lat, lon, radius_km=5):
@@ -164,8 +161,13 @@ def classify_location(lat, lon, mineral_coverage, mineral_name='iron'):
 
 @app.route('/')
 def index():
-    """Serve the frontend"""
-    return render_template('index.html')
+    """API info endpoint"""
+    return jsonify({
+        'service': 'SpectraMining AI Backend',
+        'version': '1.0',
+        'status': 'running',
+        'frontend': 'Deploy to Vercel separately'
+    })
 
 
 @app.route('/api/health', methods=['GET'])
